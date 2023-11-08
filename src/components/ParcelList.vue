@@ -1,15 +1,17 @@
 <template>
-  <div class="home">
-      <h3>Parsel List</h3>
-      <div v-for="parcel in parcelStore.getParcels" v-bind:key="parcel.id">
+  <div class="home p-8">
+    <h3 class="text-2xl font-semibold mb-4">Parcel List</h3>
+    <div class="grid grid-cols-1 gap-5">
+      <div v-for="parcel in parcelStore.getParcels" :key="parcel.id">
         <Suspense>
           <Parcel :parcel="parcel" />
           <template #fallback>
-            Loading tasks...
+            <div class="text-gray-500 text-sm">Loading parcels...</div>
           </template>
         </Suspense>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
