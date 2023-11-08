@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-    <div class="task border lg:w-full border-gray-200 rounded p-4 mb-4">
+    <div class="task border lg:w-full border-gray-200 rounded p-4 mb-2">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1 gap-1">
         <div class="flex lg:w-full flex-col justify-center">
             <span class="flex w-min px-3 py-1 justify-center items-center bg-pink-400 text-white rounded-full text-sm lg:text-base mb-5">{{ parcel.parcelType }}</span>

@@ -1,5 +1,5 @@
 <template>
-  <div class="home p-8">
+  <div class="home p-8 min-h-screen">
     <h3 class="text-2xl font-semibold mb-4">Parcel List</h3>
     <div class="grid grid-cols-1 gap-5">
       <div v-for="parcel in parcelStore.getParcels" :key="parcel.id">
