@@ -10,7 +10,7 @@
           </span>
             <span 
             class="flex w-max px-3 py-1 justify-center items-center bg-purple-400 text-white rounded-full text-sm lg:text-base mb-5 ml-2">
-            {{ getData }}
+            {{ getDate }}
           </span>
           </div>
           <h3 class="text-xl lg:text-2xl font-semibold mb-2">
@@ -18,15 +18,17 @@
             <font-awesome-icon class="ml-4 mr-4" :icon="['fas', 'arrow-right-long']" style="color: #d4ffdc;" beat/>
             {{ parcel.cityTo }} 
           </h3>
-          <span v-if="!showDetails" class="flex w-11/12 px-3 py-1 bg-purple-500 rounded text-white mb-5 mt-5">
-            Description: {{ parcel.description.slice(0, 70) }}
-            <button @click="toggleDetails" 
-            class="flex w-1/4 px-3 py-1 bg-purple-600 rounded text-white mb-5 mt-5">
+          <span v-if="!showDetails" class="flex-col w-11/12 px-3 py-1 bg-purple-500 text-white mb-5 mt-5">
+            Description: {{ parcel.description.slice(0, 80) }}
+            <button v-if="parcel.description.length > 80" @click="toggleDetails" 
+            class="float-right w-max h-min px-3 py-1 bg-purple-600 rounded text-white mr-0 ml-auto mb-0 mt-auto">
               ...ShowDetails</button>
           </span>
           <span v-if="showDetails" 
-          class="flex w-11/12 px-3 py-1 bg-purple-500 rounded text-white mb-5 mt-5">
-            Description: {{ parcel.description }}<button @click="toggleDetails" class="flex w-1/4 px-3 py-1 bg-purple-600 rounded text-white mb-5 mt-5">
+          class="flex-col w-11/12 px-3 py-1 bg-purple-500 rounded text-white mb-5 mt-5">
+            Description: {{ parcel.description }}
+            <button @click="toggleDetails" 
+            class="float-right w-max h-min px-3 py-1 bg-purple-600 rounded text-white mr-0 ml-auto mb-0 mt-auto">
               ...Hide Details</button>
           </span>
         </div>
@@ -61,7 +63,7 @@
   },
     props: ['parcel'],
    computed: {
-      getData() {
+      getDate() {
         const options = {
           weekday: "short",
           year: "numeric",
