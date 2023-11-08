@@ -3,12 +3,20 @@
 </script>
 
 <template>
-  <div class="app">
-    <nav class="navigation">
-      <RouterLink to="/">Parcel List</RouterLink>
-      <RouterLink to="/newParcel">New Parcel</RouterLink>
+  <div class="bg-slate-800 text-white">
+    <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-slate-900 mb-3">
+      <div class="container bg-slate-800 px-5 mx-auto flex flex-wrap items-center justify-between">
+          <RouterLink to="/" class="text-purple-100 hover:text-blue-200 px-2 py-1 lg:px-4 lg:py-2 text-lg lg:text-xl font-semibold transition duration-300 ease-in-out">
+            Parcel List{{' [ '}}<font-awesome-icon :icon="['fas', 'boxes-stacked']" beat/>{{' ]'}}
+          </RouterLink>
+        <div class="flex flex-col lg:flex-row list-none ml-auto" id="example-navbar-warning">
+          <RouterLink to="/newParcel" class="text-purple-100 hover:text-blue-200 px-2 py-1 lg:px-4 lg:py-2 text-lg lg:text-xl font-semibold transition duration-300 ease-in-out">
+            New Parcel{{'  +'}}<font-awesome-icon :icon="['fas', 'box-open']" bounce />
+          </RouterLink>
+        </div>
+      </div>
     </nav>
-    <div class="wrapper">
+    <div class="container bg-slate-900">
       <RouterView />
     </div>
   </div>
