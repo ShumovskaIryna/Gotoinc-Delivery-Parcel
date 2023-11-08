@@ -62,6 +62,17 @@
         </div>
       </div>
 
+      <!-- DataPicker -->
+      <div class="mb-4">
+        <label class="block uppercase text-gray-100 text-sm font-semibold mb-3" for="date">Date of dispatch</label>
+        <div class="relative">
+          <DatePicker 
+          v-model="parcelForm.date" 
+          class="w-full border bg-slate-300 text-gray-900  border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+
       <!-- Parcel Type Dropdown -->
       <div class="mb-4">
         <label class="block uppercase text-gray-100 text-sm font-semibold mb-3" for="parcelType">Type of Parcel</label>
@@ -102,6 +113,7 @@
 
 <script>
 import { useParcelStore } from '../stores/parcelStore'
+import DatePicker from "vue3-datepicker";
 import axios from 'axios'
 
 export default {
@@ -110,15 +122,18 @@ export default {
       parcelForm: {
         cityFrom: '',
         cityTo: '',
-        parcelType: "other",
+        parcelType: "Other",
         description: '',
-        date: '',
+        date: new Date(),
       },
       mapboxSearchResultsFrom: [],
       mapboxSearchResultsTo: [],
       searchErrorFrom: false,
       searchErrorTo: false,
     }
+  },
+  components: {
+    DatePicker,
   },
 
   setup() {
@@ -138,7 +153,7 @@ export default {
 
       this.parcelForm.cityFrom = ''
       this.parcelForm.cityTo = ''
-      this.parcelForm.parcelType = "other"
+      this.parcelForm.parcelType = "Other"
       this.parcelForm.description = ''
       this.parcelForm.date = ''
       this.$router.push('/');
@@ -201,7 +216,7 @@ export default {
     reset() {
       this.parcelForm.cityFrom = ''
       this.parcelForm.cityTo = ''
-      this.parcelForm.parcelType = "other"
+      this.parcelForm.parcelType = "Other"
       this.parcelForm.description = ''
       this.parcelForm.date = ''
     },
