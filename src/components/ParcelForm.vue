@@ -103,10 +103,15 @@
 
       <!-- Submit Button -->
       <div>
-        <button type="submit" class="w-full bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button v-if="!editParcel" type="submit" class="w-full bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
           Add parcel{{'  +'}}<font-awesome-icon :icon="['fas', 'box-open']" />
         </button>
-        <button v-if="editParcel" @click="toggleParcelForm" class="w-full bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button v-if="editParcel" type="submit" 
+        class="w-full bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+          Save changes
+        </button>
+        <button v-if="editParcel" @click="toggleParcelForm" 
+        class="w-full bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
           Cancel
         </button>
       </div>
