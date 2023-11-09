@@ -110,23 +110,28 @@
         <button type="submit" class="w-full bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
           Add parcel{{'  +'}}<font-awesome-icon :icon="['fas', 'box-open']" />
         </button>
+        <button v-if="editParcel" @click="toggleParcelForm" class="w-full bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Cancel
+        </button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-import { useParcelStore } from '../stores/parcelStore'
-import DatePicker from "vue3-datepicker";
-import axios from 'axios'
+import {computed} from 'vue'
+import { useParcelStore } from '../stores/parcelStore';
+import DatePicker from 'vue3-datepicker';
+import axios from 'axios';
 
 export default {
+  props: ['editParcel', 'showEditForm', 'toggleParcelForm', 'parcelId'],
   data() {
     return {
       parcelForm: {
         cityFrom: '',
         cityTo: '',
-        parcelType: "Other",
+        parcelType: 'Other',
         description: '',
         date: new Date(),
       },
@@ -134,19 +139,30 @@ export default {
       mapboxSearchResultsTo: [],
       searchErrorFrom: false,
       searchErrorTo: false,
-    }
+    };
   },
   components: {
     DatePicker,
   },
 
   setup() {
-    const parcelStore = useParcelStore()
-    return { parcelStore }
+    const parcelStore = useParcelStore();
+    const existingParcel = computed(() => parcelStore.getParcelById(this.parcelId));
+
+    return {
+      existingParcel,
+      parcelStore
+    };
+  },
+  mounted() {
+    if (this.editParcel && this.parcelId) {
+      this.loadParcelData(this.parcelId);
+    }
   },
 
   methods: {
     async updateData() {
+    if (!this.editParcel) {
       this.parcelStore.setParcels({
         cityFrom: this.parcelForm.cityFrom,
         cityTo: this.parcelForm.cityTo,
@@ -154,13 +170,36 @@ export default {
         description: this.parcelForm.description,
         date: this.parcelForm.date,
       })
-
-      this.parcelForm.cityFrom = ''
-      this.parcelForm.cityTo = ''
-      this.parcelForm.parcelType = "Other"
-      this.parcelForm.description = ''
-      this.parcelForm.date = ''
+      } else {
+        this.parcelStore.editParcel({
+          id: this.parcelId,
+          cityFrom: this.parcelForm.cityFrom,
+          cityTo: this.parcelForm.cityTo,
+          parcelType: this.parcelForm.parcelType,
+          description: this.parcelForm.description,
+          date: this.parcelForm.date,
+        });
+      }
+      this.resetForm();
       this.$router.push('/');
+      this.toggleParcelForm();
+    },
+    loadParcelData(parcelId) {
+      const existingParcel = this.parcelStore.getParcelById(parcelId);
+      if (existingParcel) {
+        this.parcelForm.cityFrom = existingParcel.cityFrom;
+        this.parcelForm.cityTo = existingParcel.cityTo;
+        this.parcelForm.parcelType = existingParcel.parcelType;
+        this.parcelForm.description = existingParcel.description;
+        this.parcelForm.date = existingParcel.date;
+      }
+    },
+    resetForm() {
+      this.parcelForm.cityFrom = '';
+      this.parcelForm.cityTo = '';
+      this.parcelForm.parcelType = 'Other';
+      this.parcelForm.description = '';
+      this.parcelForm.date = new Date();
     },
     writeCityFrom(cityFromName) {
       this.parcelForm.cityFrom = cityFromName;
@@ -215,14 +254,6 @@ export default {
         }
         this.mapboxSearchResultsTo = []
       }, 300)
-    },
-
-    reset() {
-      this.parcelForm.cityFrom = ''
-      this.parcelForm.cityTo = ''
-      this.parcelForm.parcelType = "Other"
-      this.parcelForm.description = ''
-      this.parcelForm.date = ''
     },
   },
 }
