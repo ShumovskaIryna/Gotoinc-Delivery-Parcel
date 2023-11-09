@@ -38,7 +38,7 @@
             class="px-4 py-2 rounded-lg text-white bg-blue-400 hover:bg-blue-700 shadow-md border border-blue-500 hover:border-blue-700">
               Edit <font-awesome-icon :icon="['fass', 'pen']" style="color: #1115f9;" />
             </button>
-            <button @click="deleteParcel" 
+            <button @click="deleteParcel(parcel.id)" 
             class="px-4 py-2 rounded-lg text-white bg-red-400 hover:bg-red-700 shadow-md border border-red-500 hover:border-red-700">
               Delete <font-awesome-icon :icon="['fass', 'trash']" style="color: #ff0095;" />
             </button>
@@ -50,18 +50,26 @@
   
   <script>
   import { ref } from 'vue';
+  import { useParcelStore } from '../stores/parcelStore';
   export default {
     setup() {
+    const parcelStore = useParcelStore()
     const showDetails = ref(false);
     const toggleDetails = () => {
       showDetails.value = !showDetails.value;
     };
     return {
       showDetails,
-      toggleDetails
+      toggleDetails,
+      parcelStore
     };
   },
-    props: ['parcel'],
+  props: ['parcel'],
+  methods: {
+    deleteParcel(parcelId) {
+      this.parcelStore.deleteParcel(parcelId);
+    },
+  },
    computed: {
       getDate() {
         const options = {
