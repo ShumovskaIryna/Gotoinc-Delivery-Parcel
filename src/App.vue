@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <div class="bg-slate-800 text-white">
     <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-slate-900 mb-3">
@@ -21,3 +17,6 @@
     </div>
   </div>
 </template>
+<script>
+
+</script>

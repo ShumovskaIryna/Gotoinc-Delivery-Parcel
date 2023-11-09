@@ -45,7 +45,7 @@
           </div>
         </div>
       </div>
-      <div v-if="showEditForm" class="absolute w-full top-10">
+      <div v-if="showEditForm" class="absolute flex w-full bg-gray-900/80 left-0 top-12 z-40">
         <ParcelForm 
         :editParcel="parcel" 
         :toggleParcelForm="toggleParcelForm" 
