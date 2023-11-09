@@ -1,11 +1,7 @@
 <template>
   <div class="flex w-full justify-center mr-auto ml-auto">
     <Suspense>
-      <ParselForm 
-        :editParcel="null"
-        :toggleParcelForm="null" 
-        :showEditForm="null"
-        :parcelId="null"/>
+      <ParselForm/>
       <template #fallback>
         <Loader />
       </template>
