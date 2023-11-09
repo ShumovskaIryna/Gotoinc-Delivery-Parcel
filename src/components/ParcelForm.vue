@@ -1,30 +1,30 @@
 <template>
-  <div class="flex mb-4">
-    <form class="flex flex-col gap-y-4" @submit.prevent="updateData">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="cityFrom">
-        Sender city
-      </label>
-      <div class="relative">
-        <input
-          v-model="parcelForm.cityFrom"
-          type="text"
-          name="cityFrom"
-          placeholder="Search for a city"
-          @input="getSearchCityFrom"
-        >
-        <div class="">
-          <ul v-if="parcelForm.cityFrom" class="">
-            <p v-if="searchErrorFrom">
-              Sorry, something went wrong, please try again.
-            </p>
-            <p v-if="!searchErrorFrom && mapboxSearchResultsFrom.length === 0">
-              No results match your query, try a different term.
-            </p>
+  <div class="flex w-11/12 md:w-6/12 xl:w-6/12 justify-center mr-auto ml-auto min-h-screen text-white">
+    <form class="block tracking-wide bg-slate-800 w-full p-5 md:p-8 rounded-lg shadow-lg mt-2 mb-2" @submit.prevent="updateData">
+      <h2 class="text-purple-200 hover:text-blue-200 px-2 py-5 lg:px-4 lg:py-2 text-lg lg:text-xl font-semibold transition duration-300 ease-in-out mb-3">
+        New Parcel
+      </h2>
+      <!-- Sender City Input -->
+      <div class="mb-4">
+        <label class="block uppercase text-gray-100 text-sm font-semibold mb-3" for="cityFrom">Sender City</label>
+        <div class="relative">
+          <input
+            v-model="parcelForm.cityFrom"
+            type="text"
+            name="cityFrom"
+            placeholder="Search for a city"
+            @input="getSearchCityFrom"
+            class="w-full bg-slate-300 text-gray-900 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
+          <ul v-if="parcelForm.cityFrom">
+            <p v-if="searchErrorFrom" class="text-red-500 mt-1">Sorry, something went wrong, please try again.</p>
+            <p v-if="!searchErrorFrom && mapboxSearchResultsFrom.length === 0" class="text-red-500 mt-1">No results match your query, try a different term.</p>
             <template v-else>
               <li
                 v-for="searchResultFrom in mapboxSearchResultsFrom"
                 :key="searchResultFrom.id"
-                class=""
+                class="cursor-pointer text-blue-500 hover:text-blue-700 mt-1"
                 @click="writeCityFrom(searchResultFrom.place_name)"
               >
                 {{ searchResultFrom.place_name }}
@@ -33,30 +33,28 @@
           </ul>
         </div>
       </div>
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="cityTo">
-        Receiving city
-      </label>
-      <div class="relative">
-        <input
-          v-model="parcelForm.cityTo"
-          type="text"
-          name="cityTo"
-          placeholder="Search for a city"
-          @input="getSearchCityTo"
-        >
-        <div class="">
-          <ul v-if="parcelForm.cityTo" class="">
-            <p v-if="searchErrorTo">
-              Sorry, something went wrong, please try again.
-            </p>
-            <p v-if="!searchErrorTo && mapboxSearchResultsTo.length === 0">
-              No results match your query, try a different term.
-            </p>
+
+      <!-- Receiving City Input -->
+      <div class="mb-4">
+        <label class="block uppercase text-gray-100 text-sm font-semibold mb-3" for="cityTo">Receiving City</label>
+        <div class="relative">
+          <input
+            v-model="parcelForm.cityTo"
+            type="text"
+            name="cityTo"
+            placeholder="Search for a city"
+            @input="getSearchCityTo"
+            class="w-full bg-slate-300 text-gray-900 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
+          <ul v-if="parcelForm.cityTo">
+            <p v-if="searchErrorTo" class="text-red-500 mt-1">Sorry, something went wrong, please try again.</p>
+            <p v-if="!searchErrorTo && mapboxSearchResultsTo.length === 0" class="text-red-500 mt-1">No results match your query, try a different term.</p>
             <template v-else>
               <li
                 v-for="searchResultTo in mapboxSearchResultsTo"
                 :key="searchResultTo.id"
-                class=""
+                class="cursor-pointer text-blue-500 hover:text-blue-700 mt-1"
                 @click="writeCityTo(searchResultTo.place_name)"
               >
                 {{ searchResultTo.place_name }}
@@ -65,37 +63,61 @@
           </ul>
         </div>
       </div>
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="parcelType">
-        Type of parcel
-      </label>
-      <div class="relative">
-        <select class="border border-gray-300 px-4 py-2 rounded" id="parcelType" v-model="parcelForm.parcelType">
-          <option>gadgets</option>
-          <option>drinks</option>
-          <option>clothes</option>
-          <option>medicines</option>
-          <option>other</option>
-        </select>
+
+      <!-- DataPicker -->
+      <div class="mb-4">
+        <label class="block uppercase text-gray-100 text-sm font-semibold mb-3" for="date">Date of dispatch</label>
+        <div class="relative">
+          <DatePicker 
+          v-model="parcelForm.date" 
+          class="w-full border bg-slate-300 text-gray-900  border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+          />
+        </div>
       </div>
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="description">
-        Parcel description
-      </label>
-      <div class="relative">
-        <input
-          type="text"
-          v-model="parcelForm.description"
-          name="description"
-          class="searchInput"
-          placeholder="Parcel description"
-        >
+
+      <!-- Parcel Type Dropdown -->
+      <div class="mb-4">
+        <label class="block uppercase text-gray-100 text-sm font-semibold mb-3" for="parcelType">Type of Parcel</label>
+        <div class="relative">
+          <select class="w-full bg-slate-300 text-gray-900 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="parcelType" v-model="parcelForm.parcelType">
+            <option value="Gadgets">Gadgets</option>
+            <option value="Drinks">Drinks</option>
+            <option value="Clothes">Clothes</option>
+            <option value="Medicines">Medicines</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
       </div>
-      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Add Parcel</button>
+
+      <!-- Parcel Description Input -->
+      <div class="mb-4">
+        <label class="block uppercase text-gray-100 text-sm font-semibold mb-3" for="description">Parcel Description</label>
+        <div class="relative">
+          <input
+            type="text"
+            v-model="parcelForm.description"
+            name="description"
+            class="w-full border bg-slate-300 text-gray-900  border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Parcel description"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button type="submit" class="w-full bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Add parcel{{'  +'}}<font-awesome-icon :icon="['fas', 'box-open']" />
+        </button>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
 import { useParcelStore } from '../stores/parcelStore'
+import DatePicker from "vue3-datepicker";
 import axios from 'axios'
 
 export default {
@@ -104,15 +126,18 @@ export default {
       parcelForm: {
         cityFrom: '',
         cityTo: '',
-        parcelType: '',
+        parcelType: "Other",
         description: '',
-        date: '',
+        date: new Date(),
       },
       mapboxSearchResultsFrom: [],
       mapboxSearchResultsTo: [],
       searchErrorFrom: false,
       searchErrorTo: false,
     }
+  },
+  components: {
+    DatePicker,
   },
 
   setup() {
@@ -132,10 +157,10 @@ export default {
 
       this.parcelForm.cityFrom = ''
       this.parcelForm.cityTo = ''
-      this.parcelForm.parcelType = ''
+      this.parcelForm.parcelType = "Other"
       this.parcelForm.description = ''
       this.parcelForm.date = ''
-      
+      this.$router.push('/');
     },
     writeCityFrom(cityFromName) {
       this.parcelForm.cityFrom = cityFromName;
@@ -195,7 +220,7 @@ export default {
     reset() {
       this.parcelForm.cityFrom = ''
       this.parcelForm.cityTo = ''
-      this.parcelForm.parcelType = ''
+      this.parcelForm.parcelType = "Other"
       this.parcelForm.description = ''
       this.parcelForm.date = ''
     },
