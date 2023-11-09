@@ -5,7 +5,7 @@
         New Parcel{{'  +'}}<font-awesome-icon :icon="['fas', 'box-open']" bounce :key="'icon2'" />
       </h2>
       <h2 v-if="editParcel" class="text-purple-200 hover:text-blue-200 px-2 py-5 lg:px-4 lg:py-2 text-lg lg:text-xl font-semibold transition duration-300 ease-in-out mb-3">
-        Edit Parcel{{'  '}}<font-awesome-icon :icon="['fas', 'box-open']" bounce :key="'icon2'" /> <font-awesome-icon :icon="['fass', 'pen']" style="color: #1115f9;" />
+        Edit Parcel{{'  '}}<font-awesome-icon :icon="['fas', 'box-open']" bounce :key="'icon2'" /> <font-awesome-icon :icon="['fass', 'pen']" />
       </h2>
       <!-- Sender City Input -->
       <div class="mb-4">
@@ -102,15 +102,15 @@
 
       <!-- Submit Button -->
       <div>
-        <button v-if="!editParcel" type="submit" class="w-full bg-green-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button v-if="!editParcel" type="submit" class="w-full bg-green-500 hover:bg-green-800 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
           Add parcel{{'  +'}}<font-awesome-icon :icon="['fas', 'box-open']" />
         </button>
         <button v-if="editParcel" type="submit" 
-        class="w-full bg-green-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+        class="w-full bg-green-500 hover:bg-green-800 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
           Save changes
         </button>
         <button v-if="editParcel" @click="toggleParcelForm" 
-        class="w-full bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        class="w-full bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
           Cancel
         </button>
       </div>

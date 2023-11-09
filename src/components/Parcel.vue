@@ -18,14 +18,14 @@
             <font-awesome-icon class="ml-4 mr-4" :icon="['fas', 'arrow-right-long']" style="color: #d4ffdc;" beat/>
             {{ parcel.cityTo }} 
           </h3>
-          <span v-if="!showDetails" class="flex-col w-11/12 px-3 py-1 bg-purple-500 text-white mb-5 mt-5">
+          <span v-if="!showDetails" class="flex-col w-full rounded px-3 py-1 bg-purple-500/50 text-white mb-5 mt-5">
             Description: {{ parcel.description.slice(0, 80) }}
             <button v-if="parcel.description.length > 80" @click="toggleDetails" 
             class="float-right w-max h-min px-3 py-1 bg-purple-600 rounded text-white mr-0 ml-auto mb-0 mt-auto">
               ...ShowDetails</button>
           </span>
           <span v-if="showDetails" 
-          class="flex-col w-11/12 px-3 py-1 bg-purple-500 rounded text-white mb-5 mt-5">
+          class="flex-col w-full px-3 py-1 bg-purple-500/50 rounded text-white mb-5 mt-5">
             Description: {{ parcel.description }}
             <button @click="toggleDetails" 
             class="float-right w-max h-min px-3 py-1 bg-purple-600 rounded text-white mr-0 ml-auto mb-0 mt-auto">
