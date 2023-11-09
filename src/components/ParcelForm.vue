@@ -1,8 +1,11 @@
 <template>
   <div class="flex w-11/12 md:w-6/12 xl:w-6/12 justify-center mr-auto ml-auto min-h-screen text-white">
     <form class="block tracking-wide bg-slate-800 w-full p-5 md:p-8 rounded-lg shadow-lg mt-2 mb-2" @submit.prevent="updateData">
-      <h2 class="text-purple-200 hover:text-blue-200 px-2 py-5 lg:px-4 lg:py-2 text-lg lg:text-xl font-semibold transition duration-300 ease-in-out mb-3">
-        New Parcel
+      <h2 v-if="!editParcel" class="text-purple-200 hover:text-blue-200 px-2 py-5 lg:px-4 lg:py-2 text-lg lg:text-xl font-semibold transition duration-300 ease-in-out mb-3">
+        New Parcel{{'  +'}}<font-awesome-icon :icon="['fas', 'box-open']" bounce :key="'icon2'" />
+      </h2>
+      <h2 v-if="editParcel" class="text-purple-200 hover:text-blue-200 px-2 py-5 lg:px-4 lg:py-2 text-lg lg:text-xl font-semibold transition duration-300 ease-in-out mb-3">
+        Edit Parcel{{'  '}}<font-awesome-icon :icon="['fas', 'box-open']" bounce :key="'icon2'" /> <font-awesome-icon :icon="['fass', 'pen']" style="color: #1115f9;" />
       </h2>
       <!-- Sender City Input -->
       <div class="mb-4">
@@ -18,18 +21,14 @@
             required
           >
           <ul v-if="parcelForm.cityFrom">
-            <p v-if="searchErrorFrom" class="text-red-500 mt-1">Sorry, something went wrong, please try again.</p>
-            <p v-if="!searchErrorFrom && mapboxSearchResultsFrom.length === 0" class="text-red-500 mt-1">No results match your query, try a different term.</p>
-            <template v-else>
-              <li
-                v-for="searchResultFrom in mapboxSearchResultsFrom"
-                :key="searchResultFrom.id"
-                class="cursor-pointer text-blue-500 hover:text-blue-700 mt-1"
-                @click="writeCityFrom(searchResultFrom.place_name)"
-              >
-                {{ searchResultFrom.place_name }}
-              </li>
-            </template>
+            <li
+              v-for="searchResultFrom in mapboxSearchResultsFrom"
+              :key="searchResultFrom.id"
+              class="cursor-pointer text-blue-500 hover:text-blue-700 mt-1"
+              @click="writeCityFrom(searchResultFrom.place_name)"
+            >
+              {{ searchResultFrom.place_name }}
+            </li>
           </ul>
         </div>
       </div>
@@ -48,18 +47,14 @@
             required
           >
           <ul v-if="parcelForm.cityTo">
-            <p v-if="searchErrorTo" class="text-red-500 mt-1">Sorry, something went wrong, please try again.</p>
-            <p v-if="!searchErrorTo && mapboxSearchResultsTo.length === 0" class="text-red-500 mt-1">No results match your query, try a different term.</p>
-            <template v-else>
-              <li
-                v-for="searchResultTo in mapboxSearchResultsTo"
-                :key="searchResultTo.id"
-                class="cursor-pointer text-blue-500 hover:text-blue-700 mt-1"
-                @click="writeCityTo(searchResultTo.place_name)"
-              >
-                {{ searchResultTo.place_name }}
-              </li>
-            </template>
+            <li
+              v-for="searchResultTo in mapboxSearchResultsTo"
+              :key="searchResultTo.id"
+              class="cursor-pointer text-blue-500 hover:text-blue-700 mt-1"
+              @click="writeCityTo(searchResultTo.place_name)"
+            >
+              {{ searchResultTo.place_name }}
+            </li>
           </ul>
         </div>
       </div>
@@ -107,11 +102,11 @@
 
       <!-- Submit Button -->
       <div>
-        <button v-if="!editParcel" type="submit" class="w-full bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button v-if="!editParcel" type="submit" class="w-full bg-green-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
           Add parcel{{'  +'}}<font-awesome-icon :icon="['fas', 'box-open']" />
         </button>
         <button v-if="editParcel" type="submit" 
-        class="w-full bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+        class="w-full bg-green-400 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
           Save changes
         </button>
         <button v-if="editParcel" @click="toggleParcelForm" 
