@@ -34,7 +34,7 @@
         </div>
         <div class="flex justify-end items-center space-x-2">
           <div class="mt-4 md:mt-0 space-x-2">
-            <button @click="editParcel" 
+            <button @click="toggleParcelForm" 
             class="px-4 py-2 rounded-lg text-white bg-blue-400 hover:bg-blue-700 shadow-md border border-blue-500 hover:border-blue-700">
               Edit <font-awesome-icon :icon="['fass', 'pen']" style="color: #1115f9;" />
             </button>
@@ -45,32 +45,49 @@
           </div>
         </div>
       </div>
+      <div v-if="showEditForm" class="absolute w-full top-10">
+        <ParcelForm 
+        :editParcel="parcel" 
+        :toggleParcelForm="toggleParcelForm" 
+        :showEditForm="showEditForm"
+        :parcelId="parcel.id"/>
+      </div>
     </div>
   </template>
   
   <script>
   import { ref } from 'vue';
   import { useParcelStore } from '../stores/parcelStore';
+  import ParcelForm from './ParcelForm.vue';
   export default {
-    setup() {
-    const parcelStore = useParcelStore()
-    const showDetails = ref(false);
-    const toggleDetails = () => {
-      showDetails.value = !showDetails.value;
-    };
-    return {
-      showDetails,
-      toggleDetails,
-      parcelStore
-    };
-  },
-  props: ['parcel'],
-  methods: {
-    deleteParcel(parcelId) {
-      this.parcelStore.deleteParcel(parcelId);
+    components: { 
+      ParcelForm, 
     },
-  },
-   computed: {
+    setup() {
+      const parcelStore = useParcelStore();
+      const showDetails = ref(false);
+      const showEditForm = ref(false);
+      const toggleDetails = () => {
+        showDetails.value = !showDetails.value;
+      };
+      const toggleParcelForm = ()=> {
+        showEditForm.value = !showEditForm.value;
+      };
+      return {
+        showDetails,
+        showEditForm,
+        toggleDetails,
+        toggleParcelForm,
+        parcelStore
+      };
+    },
+    props: ['parcel'],
+    methods: {
+      deleteParcel(parcelId) {
+        this.parcelStore.deleteParcel(parcelId);
+      },
+    },
+    computed: {
       getDate() {
         const options = {
           weekday: "short",
