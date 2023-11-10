@@ -25,13 +25,6 @@ export default {
   setup() {
     const parcelStore = useParcelStore()
     return { parcelStore }
-  },
-  methods: {
-    async updateData() {
-      this.parcelStore.getParcels.map((parcel) => {
-        console.log(parcel)
-      })
-    },
   }
 }
 </script>

@@ -162,27 +162,27 @@ export default {
 
   methods: {
     async updateData() {
-    if (!this.editParcel) {
-      this.parcelStore.setParcels({
-        cityFrom: this.parcelForm.cityFrom,
-        cityTo: this.parcelForm.cityTo,
-        parcelType: this.parcelForm.parcelType,
-        description: this.parcelForm.description,
-        date: this.parcelForm.date,
-      })
-      } else {
-        this.parcelStore.editParcel({
-          id: this.parcelId,
+      if (!this.editParcel) {
+        this.parcelStore.setParcels({
           cityFrom: this.parcelForm.cityFrom,
           cityTo: this.parcelForm.cityTo,
           parcelType: this.parcelForm.parcelType,
           description: this.parcelForm.description,
           date: this.parcelForm.date,
-        });
-      }
-      this.resetForm();
-      this.$router.push('/');
-      this.toggleParcelForm();
+        })
+      } else {
+          this.parcelStore.editParcel({
+            id: this.parcelId,
+            cityFrom: this.parcelForm.cityFrom,
+            cityTo: this.parcelForm.cityTo,
+            parcelType: this.parcelForm.parcelType,
+            description: this.parcelForm.description,
+            date: this.parcelForm.date,
+          });
+        }
+        this.resetForm();
+        this.$router.push('/');
+        this.toggleParcelForm();
     },
     loadParcelData(parcelId) {
       const existingParcel = this.parcelStore.getParcelById(parcelId);
@@ -258,12 +258,3 @@ export default {
   },
 }
 </script>
-
-
-
-
-
-
-
-
-
