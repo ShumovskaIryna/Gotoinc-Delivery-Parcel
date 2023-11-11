@@ -15,6 +15,8 @@ const defaultMock = {
     },
     props: {
       toggleParcelForm: () => {},
+      editParcel: {
+      }
     },
 }
   

@@ -25,14 +25,14 @@ export const useParcelStore = defineStore('parcel', {
   actions: {
     setParcels(data) {
       const newParcel = { id: this.parcelIdCounter++, ...data };
-      this.parcels.push(newParcel);
+      this.parcels.unshift(newParcel);
       return this.parcels;
     },
     deleteParcel(parcelId) {
       this.parcels = this.parcels.filter((parcel) => parcel.id !== parcelId);
     },
-    editParcel(updatedParcel) {
-      const index = this.parcels.findIndex((parcel) => parcel.id === updatedParcel.id);
+    editParcelById(id, updatedParcel) {
+      const index = this.parcels.findIndex((parcel) => parcel.id === id);
       if (index !== -1) {
         this.parcels.splice(index, 1, updatedParcel);
       }

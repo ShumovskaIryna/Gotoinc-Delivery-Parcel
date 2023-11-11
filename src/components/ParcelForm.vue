@@ -16,11 +16,11 @@
             type="text"
             name="cityFrom"
             placeholder="Search for a city"
-            @input="getSearchCityFrom"
+            @input="getSearchCity($event, 'cityFrom')"
             class="w-full bg-slate-300 text-gray-900 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           >
-          <ul v-if="parcelForm.cityFrom">
+          <ul>
             <li
               v-for="searchResultFrom in mapboxSearchResultsFrom"
               :key="searchResultFrom.id"
@@ -42,11 +42,11 @@
             type="text"
             name="cityTo"
             placeholder="Search for a city"
-            @input="getSearchCityTo"
+            @input="getSearchCity($event, 'cityTo')"
             class="w-full bg-slate-300 text-gray-900 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           >
-          <ul v-if="parcelForm.cityTo">
+          <ul>
             <li
               v-for="searchResultTo in mapboxSearchResultsTo"
               :key="searchResultTo.id"
@@ -119,7 +119,6 @@
 </template>
 
 <script>
-import {computed} from 'vue'
 import { useParcelStore } from '../stores/parcelStore';
 import DatePicker from 'vue3-datepicker';
 import axios from 'axios';
@@ -128,13 +127,6 @@ export default {
   props: ['editParcel', 'showEditForm', 'toggleParcelForm', 'parcelId'],
   data() {
     return {
-      parcelForm: {
-        cityFrom: '',
-        cityTo: '',
-        parcelType: 'Other',
-        description: '',
-        date: new Date(),
-      },
       mapboxSearchResultsFrom: [],
       mapboxSearchResultsTo: [],
       searchErrorFrom: false,
@@ -145,54 +137,45 @@ export default {
     DatePicker,
   },
 
-  setup() {
+  setup(props) {
     const parcelStore = useParcelStore();
-    const existingParcel = computed(() => parcelStore.getParcelById(this.parcelId));
-
+    const parcelForm = {
+      cityFrom: props.editParcel?.cityFrom || '',
+      cityTo: props.editParcel?.cityTo || '',
+      parcelType: props.editParcel?.parcelType || 'Other',
+      description: props.editParcel?.description || '',
+      date: props.editParcel?.date || new Date(),
+    };
     return {
-      existingParcel,
-      parcelStore
+      parcelStore,
+      parcelForm
     };
   },
-  mounted() {
-    if (this.editParcel && this.parcelId) {
-      this.loadParcelData(this.parcelId);
-    }
-  },
-
   methods: {
     async updateData() {
       if (!this.editParcel) {
         this.parcelStore.setParcels({
-          cityFrom: this.parcelForm.cityFrom,
-          cityTo: this.parcelForm.cityTo,
-          parcelType: this.parcelForm.parcelType,
-          description: this.parcelForm.description,
-          date: this.parcelForm.date,
+          cityFrom: this.parcelForm?.cityFrom,
+          cityTo: this.parcelForm?.cityTo,
+          parcelType: this.parcelForm?.parcelType,
+          description: this.parcelForm?.description,
+          date: this.parcelForm?.date,
         })
       } else {
-          this.parcelStore.editParcel({
-            id: this.parcelId,
-            cityFrom: this.parcelForm.cityFrom,
-            cityTo: this.parcelForm.cityTo,
-            parcelType: this.parcelForm.parcelType,
-            description: this.parcelForm.description,
-            date: this.parcelForm.date,
-          });
+          this.parcelStore.editParcelById(
+            this.parcelId, 
+            {
+              cityFrom: this.parcelForm.cityFrom,
+              cityTo: this.parcelForm.cityTo,
+              parcelType: this.parcelForm.parcelType,
+              description: this.parcelForm.description,
+              date: this.parcelForm.date,
+            },
+          );
         }
         this.resetForm();
         this.$router.push('/');
         this.toggleParcelForm();
-    },
-    loadParcelData(parcelId) {
-      const existingParcel = this.parcelStore.getParcelById(parcelId);
-      if (existingParcel) {
-        this.parcelForm.cityFrom = existingParcel.cityFrom;
-        this.parcelForm.cityTo = existingParcel.cityTo;
-        this.parcelForm.parcelType = existingParcel.parcelType;
-        this.parcelForm.description = existingParcel.description;
-        this.parcelForm.date = existingParcel.date;
-      }
     },
     resetForm() {
       this.parcelForm.cityFrom = '';
@@ -210,51 +193,38 @@ export default {
       this.mapboxSearchResultsTo = ['']
     },
 
-    async getSearchCityFrom() {
+    async getSearchCity(_, destination) {
+      console.log(destination, this.parcelForm[destination])
       const mapboxAPIKey =
         'pk.eyJ1IjoiaXJ5bmthcGFuZGEiLCJhIjoiY2xnYjkxcm9wMGw0bjNjcWxhcW5qZWJhNSJ9.T2d9setCNRmlOh3ix874Pw'
 
-      const cityFrom = this.parcelForm.cityFrom
+      const city = this.parcelForm[destination]
       clearTimeout(this.queryTimeoutFrom)
 
       this.queryTimeoutFrom = setTimeout(async () => {
-        if (cityFrom !== '') {
+        if (city !== '') {
           try {
             const result = await axios.get(
-              `https://api.mapbox.com/geocoding/v5/mapbox.places/${cityFrom}.json?access_token=${mapboxAPIKey}&types=place`
+              `https://api.mapbox.com/geocoding/v5/mapbox.places/${city}.json?access_token=${mapboxAPIKey}&types=place`
             )
-            this.mapboxSearchResultsFrom = result.data.features
+
+            if (destination === 'cityFrom') {
+              this.mapboxSearchResultsFrom = result.data.features
+            } else {
+              this.mapboxSearchResultsTo = result.data.features
+            }
           } catch {
             this.searchErrorFrom = true
           }
           return
         }
-        this.mapboxSearchResultsFrom = []
-      }, 300)
-    },
-
-    async getSearchCityTo() {
-      const mapboxAPIKey =
-        'pk.eyJ1IjoiaXJ5bmthcGFuZGEiLCJhIjoiY2xnYjkxcm9wMGw0bjNjcWxhcW5qZWJhNSJ9.T2d9setCNRmlOh3ix874Pw'
-
-      const cityTo = this.parcelForm.cityTo
-      clearTimeout(this.queryTimeoutTo)
-
-      this.queryTimeoutTo = setTimeout(async () => {
-        if (cityTo !== '') {
-          try {
-            const result = await axios.get(
-              `https://api.mapbox.com/geocoding/v5/mapbox.places/${cityTo}.json?access_token=${mapboxAPIKey}&types=place`
-            )
-            this.mapboxSearchResultsTo = result.data.features
-          } catch {
-            this.searchErrorTo = true
-          }
-          return
-        }
-        this.mapboxSearchResultsTo = []
-      }, 300)
-    },
+        if (destination === 'cityFrom') {
+              this.mapboxSearchResultsFrom =[]
+            } else {
+              this.mapboxSearchResultsTo = []
+            }
+      }, 100)
+    }
   },
 }
 </script>
