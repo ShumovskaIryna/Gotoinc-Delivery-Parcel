@@ -16,8 +16,7 @@
         v-if="editParcel"
         class="text-purple-200 hover:text-blue-200 px-2 py-5 lg:px-4 lg:py-2 text-lg lg:text-xl font-semibold transition duration-300 ease-in-out mb-3"
       >
-        Edit Parcel{{ '  '
-        }}<font-awesome-icon :icon="['fas', 'box-open']" bounce :key="'icon2'" />
+        Edit Parcel{{ '  ' }}<font-awesome-icon :icon="['fas', 'box-open']" bounce :key="'icon2'" />
         <font-awesome-icon :icon="['fass', 'pen']" />
       </h2>
       <!-- Sender City Input -->
@@ -157,8 +156,8 @@
 
 <script>
 import { useParcelStore } from '../stores/parcelStore'
+import { fetchCityResults } from '../api/mapboxService'
 import DatePicker from 'vue3-datepicker'
-import axios from 'axios'
 
 export default {
   props: ['editParcel', 'showEditForm', 'toggleParcelForm', 'parcelId'],
@@ -226,31 +225,24 @@ export default {
       this.parcelForm.cityTo = cityToName
       this.mapboxSearchResultsTo = ['']
     },
-
     async getSearchCity(_, destination) {
-      console.log(destination, this.parcelForm[destination])
-      const mapboxAPIKey =
-        'pk.eyJ1IjoiaXJ5bmthcGFuZGEiLCJhIjoiY2xnYjkxcm9wMGw0bjNjcWxhcW5qZWJhNSJ9.T2d9setCNRmlOh3ix874Pw'
-
       const city = this.parcelForm[destination]
       clearTimeout(this.queryTimeoutFrom)
 
       this.queryTimeoutFrom = setTimeout(async () => {
         if (city !== '') {
           try {
-            const result = await axios.get(
-              `https://api.mapbox.com/geocoding/v5/mapbox.places/${city}.json?access_token=${mapboxAPIKey}&types=place`
-            )
+            const result = await fetchCityResults(city)
 
             if (destination === 'cityFrom') {
-              this.mapboxSearchResultsFrom = result.data.features
+              this.mapboxSearchResultsFrom = result;
             } else {
-              this.mapboxSearchResultsTo = result.data.features
+              this.mapboxSearchResultsTo = result;
             }
           } catch {
-            this.searchErrorFrom = true
+            this.searchErrorFrom = true;
           }
-          return
+          return;
         }
         if (destination === 'cityFrom') {
           this.mapboxSearchResultsFrom = []
