@@ -60,7 +60,7 @@
             Edit <font-awesome-icon :icon="['fass', 'pen']" style="color: #1115f9" />
           </button>
           <button
-            @click="deleteParcel(parcel.id)"
+            @click="togglePopup"
             class="px-4 py-2 rounded-lg text-white bg-red-400 hover:bg-red-700 shadow-md border border-red-500 hover:border-red-700"
           >
             Delete <font-awesome-icon :icon="['fass', 'trash']" style="color: #ff0095" />
@@ -68,6 +68,25 @@
         </div>
       </div>
     </div>
+    <Popup
+      v-if="popupTrigger"
+    >
+      <h2 class="flex justify-center align-center mb-6">Really? Delete this parcel?</h2>
+      <div class="w-full lg:w-3/4 px-5 mx-auto flex flex-wrap items-center justify-between">
+        <button
+          class="px-4 py-2 bg-red-500 rounded"
+          @click="(deleteParcel(parcel.id), togglePopup)"
+        >
+          Delete
+        </button>
+        <button
+          class="px-4 py-2 bg-blue-500 rounded"
+          @click="togglePopup"
+        >
+          Cancel
+        </button>
+      </div>
+    </Popup>
     <div v-if="showEditForm" class="fixed flex w-full bg-gray-900/80 left-0 top-0 z-40">
       <ParcelForm
         :editParcel="parcel"
@@ -83,25 +102,33 @@
 import { ref } from 'vue'
 import { useParcelStore } from '../stores/parcelStore'
 import ParcelForm from './ParcelForm.vue'
+import Popup from './Popups.vue'
 export default {
   components: {
-    ParcelForm
+    ParcelForm,
+    Popup
   },
   setup() {
     const parcelStore = useParcelStore()
     const showDetails = ref(false)
     const showEditForm = ref(false)
+    const popupTrigger = ref(false)
     const toggleDetails = () => {
       showDetails.value = !showDetails.value
     }
     const toggleParcelForm = () => {
       showEditForm.value = !showEditForm.value
     }
+    const togglePopup = () => {
+      popupTrigger.value = !popupTrigger.value
+    }
     return {
       showDetails,
       showEditForm,
+      popupTrigger,
       toggleDetails,
       toggleParcelForm,
+      togglePopup,
       parcelStore
     }
   },
