@@ -1,24 +1,22 @@
 const FontAwesomeIcon = {
-    template: '<span>Font Awesome Icon</span>',
-};
+  template: '<span>Font Awesome Icon</span>'
+}
 
 const defaultMock = {
-    global: {
-      components: {
-        'font-awesome-icon': FontAwesomeIcon,
-      },
-      mocks: {
-        $router: {
-          push: () => {}
-        },
-      },
+  global: {
+    components: {
+      'font-awesome-icon': FontAwesomeIcon
     },
-    props: {
-      toggleParcelForm: () => {},
-      editParcel: {
+    mocks: {
+      $router: {
+        push: () => {}
       }
-    },
+    }
+  },
+  props: {
+    toggleParcelForm: () => {},
+    editParcel: {}
+  }
 }
-  
 
-export default defaultMock;
+export default defaultMock

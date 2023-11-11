@@ -1,7 +1,7 @@
 <template>
   <div class="flex w-full justify-center mr-auto ml-auto">
     <Suspense>
-      <ParselForm/>
+      <ParselForm />
       <template #fallback>
         <Loader />
       </template>
