@@ -14,7 +14,7 @@ const router = createRouter({
       path: '/newParcel',
       name: 'deliveryForm',
       component: DeliveryForm
-    },
+    }
   ]
 })
 
