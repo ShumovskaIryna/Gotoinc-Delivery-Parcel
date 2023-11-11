@@ -1,5 +1,11 @@
 # delivery-parcel-app
 
+
+Basic implementation that allows you to create, modify and delete your parcels.
+
+![Example](./Example.png)
+
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
@@ -11,6 +17,9 @@ This template should help get you started developing with Vue 3 in Vite.
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
+
+- Provide file .env based on .env.example
+- Run npm i
 
 ```sh
 npm install
