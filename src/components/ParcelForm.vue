@@ -166,11 +166,11 @@ export default {
       mapboxSearchResultsFrom: [],
       mapboxSearchResultsTo: [],
       searchErrorFrom: false,
-      searchErrorTo: false
+      searchErrorTo: false,
     }
   },
   components: {
-    DatePicker
+    DatePicker,
   },
 
   setup(props) {
@@ -180,11 +180,11 @@ export default {
       cityTo: props.editParcel?.cityTo || '',
       parcelType: props.editParcel?.parcelType || 'Other',
       description: props.editParcel?.description || '',
-      date: props.editParcel?.date || new Date()
+      date: props.editParcel?.date || new Date(),
     }
     return {
       parcelStore,
-      parcelForm
+      parcelForm,
     }
   },
   methods: {
@@ -195,7 +195,7 @@ export default {
           cityTo: this.parcelForm?.cityTo,
           parcelType: this.parcelForm?.parcelType,
           description: this.parcelForm?.description,
-          date: this.parcelForm?.date
+          date: this.parcelForm?.date,
         })
       } else {
         this.parcelStore.editParcelById(this.parcelId, {
@@ -203,7 +203,7 @@ export default {
           cityTo: this.parcelForm.cityTo,
           parcelType: this.parcelForm.parcelType,
           description: this.parcelForm.description,
-          date: this.parcelForm.date
+          date: this.parcelForm.date,
         })
         this.toggleParcelForm()
       }
@@ -235,14 +235,14 @@ export default {
             const result = await fetchCityResults(city)
 
             if (destination === 'cityFrom') {
-              this.mapboxSearchResultsFrom = result;
+              this.mapboxSearchResultsFrom = result
             } else {
-              this.mapboxSearchResultsTo = result;
+              this.mapboxSearchResultsTo = result
             }
           } catch {
-            this.searchErrorFrom = true;
+            this.searchErrorFrom = true
           }
-          return;
+          return
         }
         if (destination === 'cityFrom') {
           this.mapboxSearchResultsFrom = []
@@ -250,7 +250,7 @@ export default {
           this.mapboxSearchResultsTo = []
         }
       }, 100)
-    }
-  }
+    },
+  },
 }
 </script>

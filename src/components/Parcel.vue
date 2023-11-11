@@ -68,23 +68,13 @@
         </div>
       </div>
     </div>
-    <Popup
-      v-if="popupTrigger"
-    >
+    <Popup v-if="popupTrigger">
       <h2 class="flex justify-center align-center mb-6">Really? Delete this parcel?</h2>
       <div class="w-full lg:w-3/4 px-5 mx-auto flex flex-wrap items-center justify-between">
-        <button
-          class="px-4 py-2 bg-red-500 rounded"
-          @click="(deleteParcel(parcel.id), togglePopup)"
-        >
+        <button class="px-4 py-2 bg-red-500 rounded" @click="deleteParcel(parcel.id), togglePopup">
           Delete
         </button>
-        <button
-          class="px-4 py-2 bg-blue-500 rounded"
-          @click="togglePopup"
-        >
-          Cancel
-        </button>
+        <button class="px-4 py-2 bg-blue-500 rounded" @click="togglePopup">Cancel</button>
       </div>
     </Popup>
     <div v-if="showEditForm" class="fixed flex w-full bg-gray-900/80 left-0 top-0 z-40">
@@ -106,7 +96,7 @@ import Popup from './Popups.vue'
 export default {
   components: {
     ParcelForm,
-    Popup
+    Popup,
   },
   setup() {
     const parcelStore = useParcelStore()
@@ -129,14 +119,14 @@ export default {
       toggleDetails,
       toggleParcelForm,
       togglePopup,
-      parcelStore
+      parcelStore,
     }
   },
   props: ['parcel'],
   methods: {
     deleteParcel(parcelId) {
       this.parcelStore.deleteParcel(parcelId)
-    }
+    },
   },
   computed: {
     getDate() {
@@ -144,10 +134,10 @@ export default {
         weekday: 'short',
         year: 'numeric',
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
       }
       return new Date(this.parcel.date).toLocaleString('en-us', options)
-    }
-  }
+    },
+  },
 }
 </script>

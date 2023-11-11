@@ -1,10 +1,8 @@
 # delivery-parcel-app
 
-
 Basic implementation that allows you to create, modify and delete your parcels.
 
 ![Example](./Example.png)
-
 
 This template should help get you started developing with Vue 3 in Vite.
 
