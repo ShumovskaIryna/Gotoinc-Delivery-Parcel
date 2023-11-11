@@ -205,10 +205,10 @@ export default {
           description: this.parcelForm.description,
           date: this.parcelForm.date
         })
+        this.toggleParcelForm()
       }
       this.resetForm()
       this.$router.push('/')
-      this.toggleParcelForm()
     },
     resetForm() {
       this.parcelForm.cityFrom = ''
