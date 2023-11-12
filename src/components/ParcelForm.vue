@@ -82,6 +82,7 @@
         >
         <div class="relative">
           <DatePicker
+            name="date"
             v-model="parcelForm.date"
             class="w-full border bg-slate-300 text-gray-900 border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
@@ -155,9 +156,11 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import DatePicker from 'vue3-datepicker'
+
 import { useParcelStore } from '../stores/parcelStore'
 import { fetchCityResults } from '../api/mapboxService'
-import DatePicker from 'vue3-datepicker'
 
 export default {
   props: ['editParcel', 'showEditForm', 'toggleParcelForm', 'parcelId'],
@@ -166,25 +169,28 @@ export default {
       mapboxSearchResultsFrom: [],
       mapboxSearchResultsTo: [],
       searchErrorFrom: false,
-      searchErrorTo: false
+      searchErrorTo: false,
     }
   },
   components: {
-    DatePicker
+    DatePicker,
   },
 
   setup(props) {
-    const parcelStore = useParcelStore()
-    const parcelForm = {
+    const parcelStore = useParcelStore();
+
+    const parcelForm = ref({
       cityFrom: props.editParcel?.cityFrom || '',
       cityTo: props.editParcel?.cityTo || '',
       parcelType: props.editParcel?.parcelType || 'Other',
       description: props.editParcel?.description || '',
-      date: props.editParcel?.date || new Date()
-    }
+      date: props.editParcel?.date || new Date(),
+    });
+
+
     return {
       parcelStore,
-      parcelForm
+      parcelForm,
     }
   },
   methods: {
@@ -195,7 +201,7 @@ export default {
           cityTo: this.parcelForm?.cityTo,
           parcelType: this.parcelForm?.parcelType,
           description: this.parcelForm?.description,
-          date: this.parcelForm?.date
+          date: this.parcelForm?.date,
         })
       } else {
         this.parcelStore.editParcelById(this.parcelId, {
@@ -203,7 +209,7 @@ export default {
           cityTo: this.parcelForm.cityTo,
           parcelType: this.parcelForm.parcelType,
           description: this.parcelForm.description,
-          date: this.parcelForm.date
+          date: this.parcelForm?.date,
         })
         this.toggleParcelForm()
       }
@@ -235,14 +241,14 @@ export default {
             const result = await fetchCityResults(city)
 
             if (destination === 'cityFrom') {
-              this.mapboxSearchResultsFrom = result;
+              this.mapboxSearchResultsFrom = result
             } else {
-              this.mapboxSearchResultsTo = result;
+              this.mapboxSearchResultsTo = result
             }
           } catch {
-            this.searchErrorFrom = true;
+            this.searchErrorFrom = true
           }
-          return;
+          return
         }
         if (destination === 'cityFrom') {
           this.mapboxSearchResultsFrom = []
@@ -250,7 +256,7 @@ export default {
           this.mapboxSearchResultsTo = []
         }
       }, 100)
-    }
-  }
+    },
+  },
 }
 </script>

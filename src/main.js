@@ -10,7 +10,7 @@ import {
   faTrash,
   faPen,
   faArrowRightLong,
-  faSpinner
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 library.add(faBoxesStacked, faBoxOpen, faTrash, faPen, faArrowRightLong, faSpinner)
 
